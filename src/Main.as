@@ -57,7 +57,18 @@ int[]@ ReadIntArray(uint64 ptr) {
     return arr;
 }
 
+
 int[] Get_Race_AuthorRaceWaypointTimes(uint32 len, uint64 basePtr) {
+    // Maniacript via MLHook
+    // Request the trait from ManiaScript
+
+    // Wait for the response
+    MLHook::Queue_MessageManialinkPlayground(ATTimesFeed.PageUID, { "GetTimes" });
+    print("Times from ML:");
+    // print(ATTimesFeed.get_Times()); TODO BACK
+    return {};
+
+    // Old way, reading bytes from gbx
     for (uint i = 0; i < len; i++) {
         uint64 ptr = basePtr + i * SZ_METADATA_ROW;
         uint traitNameLen = Dev::ReadUInt32(ptr + 0xC);
@@ -88,6 +99,7 @@ bool ATInconclusive() { return !ATValid() && !ATInvalid(); }
 
 void MainLoop() {
     while (true) {
+        // TODO: Check MLFeed running?
         sleep(500); // only check twice a seccond
         if (!S_Enabled && !force_notif) {
             continue;
@@ -148,6 +160,82 @@ void MainLoop() {
     }
 }
 
+
+
+_ATTimes@ ATTimesFeed = _ATTimes();
+
+class _ATTimes : MLHook::HookMLEventsByType {
+    bool _initialized = false;
+    int[] _times = {};
+    string temp = "";
+    string PageUID = "ATCheck";
+
+    _ATTimes() {
+        super(PageUID);
+        startnew(CoroutineFunc(this.MainCoro));
+    }
+
+//     bool get_Initialized() const {
+//         return _initialized;
+//     }
+
+//     // TODO const int[] get_Times() const {
+//     // TODO     MLHook::Queue_MessageManialinkPlayground(PageUID, { "GetTimes" });
+//     // TODO     sleep(100); //dunno just testing for now TODO remove
+//     // TODO     return _times;
+//     // TODO }
+
+    // removed const __ __ const
+    // string get_Times() {
+    //     // MLHook::Queue_MessageManialinkPlayground(PageUID, { "GetTimes" });
+    //     // sleep(100); //dunno just testing for now TODO remove
+    //     return temp;
+    // }
+
+//     MLHook::PendingEvent@[] pendingEvents;
+
+//     void OnEvent(MLHook::PendingEvent@ event) override {
+//         print("Received Event in _ATT!");
+//         pendingEvents.InsertLast(event);
+//     }
+
+    void MainCoro() {
+        while (true) {
+            yield();
+            // for (uint i = 0; i < pendingEvents.Length; i++) {
+            //     ProcessEvent(pendingEvents[i]);
+            // }
+            // pendingEvents.RemoveRange(0, pendingEvents.Length);
+        }
+    }
+
+//     void ProcessEvent(MLHook::PendingEvent@ evt) {
+//         if (evt.type == "ATTimesResult") UpdateTimes(evt);
+//         else warn("ATTimes, unknown event: " + evt.type);
+//     }
+
+//     void UpdateTimes(MLHook::PendingEvent@ evt) {
+//         if (evt.data.Length > 0) {
+//             _initialized = true;
+//             // TODO _times = cast<int[]>(evt.data[0]);
+//             print("GOT HERE!!!");
+//             print("GOT HERE!!!");
+//             print("GOT HERE!!!");
+//             temp = evt.data[0];
+//         }
+//     }
+}
+
 void Main() {
-    startnew(MainLoop);
+    // MLHook::RequireVersionApi('0.5.4');
+    // MLHook::RegisterMLHook(ATTimesFeed, ATTimesFeed.type);
+    // MLHook::InjectManialinkToPlayground(ATTimesFeed.PageUID, RACE_AT_TIMES_SCRIPT_TXT, true);
+    // startnew(MainLoop);
+}
+
+void OnDestroyed() { _Unload(); }
+void OnDisabled() { _Unload(); }
+void _Unload() {
+    trace('_Unload, unloading all hooks and removing all injected ML');
+    MLHook::UnregisterMLHooksAndRemoveInjectedML();
 }
