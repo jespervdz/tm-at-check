@@ -41,16 +41,16 @@ bool ATInconclusive() { return !ATValid() && !ATInvalid(); }
 _ATWaypointTimesFeed@ ATWaypointTimesFeed = _ATWaypointTimesFeed();
 
 class _ATWaypointTimesFeed : MLHook::HookMLEventsByType {
-    _ATWaypointTimesFeed() {
-        super("AT_Check");
-    }
+    _ATWaypointTimesFeed() { super("AT_Check"); }
 
     void OnEvent(MLHook::PendingEvent@ event) override {
         Json::Value parsed = Json::Parse(event.data[0]);
         if (parsed.GetType() == Json::Type::Array) {
-            times.RemoveRange(0, times.Length);
+            times.Resize(parsed.Length);
             for (uint i = 0; i < parsed.Length; i++)
-                times.InsertLast(int(parsed[i]));
+                times[i] = int(parsed[i]);
+        } else {
+            times.Resize(0);
         }
         mapIDChecked = currentMapUID;
     }
@@ -64,7 +64,8 @@ void MainLoop() {
 
         CGameCtnChallenge@ map = app.RootMap;
         CSmArenaClient@ playground = cast<CSmArenaClient>(app.CurrentPlayground);
-        bool isPlayingMap = !(playground is null) && !(playground.Arena.Players.Length == 0);
+        bool isPlayingMap = !(playground is null) && playground.Arena.Players.Length > 0;
+
         if (map is null || !isPlayingMap || map.MapInfo.MapUid == "")
         {
             Reset();
@@ -80,9 +81,9 @@ void MainLoop() {
             continue;
         }
 
+        // Request ML via MLHook for the AT CP Times. Will write it to `times`
         MLHook::Queue_MessageManialinkPlayground("AT_Check", "Hook_AT_Check");
-        while (currentMapUID != mapIDChecked) // yield until we have received the AT CP Times
-            yield();
+        while (currentMapUID != mapIDChecked) yield(); // yield until we have received the AT CP Times
 
         // Parse all information
         CPsToFinish = MLFeed::GetRaceData_V4().CPsToFinish;
