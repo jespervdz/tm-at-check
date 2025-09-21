@@ -1,0 +1,12 @@
+main() {
+    declare metadata Integer[] Race_AuthorRaceWaypointTimes for Map;
+    declare Text[][] MLHook_Inbound_AT_Check for ClientUI;
+    while (True) {
+        yield;
+        foreach (Event in MLHook_Inbound_AT_Check) {
+            if (Event[0] == "Hook_AT_Check")
+                SendCustomEvent("MLHook_Event_AT_Check", [Race_AuthorRaceWaypointTimes.tojson()]);
+        }
+        MLHook_Inbound_AT_Check = [];
+    }
+}
