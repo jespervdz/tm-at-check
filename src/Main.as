@@ -10,16 +10,16 @@ const uint OFFSET_VALUE_COUNT = 0x70;   // array length
 const uint OFFSET_ARRAY_VALUES = 0x8;   // pointer to element entries inside array header
 const uint SZ_INT_ARRAY_ENTRY = 0x10;   // size of each element
 
-string S_AT_Cheated_Header = "\\$o\\$sAT set by a plugin  \\$z\\$n\\$555" + pluginTitle;
-string S_AT_Cheated_Text = "AT likely set by a plugin\nCheck the plugin for details\nReminder: it could still be valid!";
+string S_AT_Invalid_Header = "\\$o\\$sAT set by a plugin  \\$z\\$n\\$555" + pluginTitle;
+string S_AT_Invalid_Text = "AT likely set by a plugin\nCheck the plugin for details\nReminder: it could still be valid!";
 string S_AT_Valid_Header = "\\$o\\$sAT Valid  \\$z\\$n\\$555" + pluginTitle;
-string S_AT_Valid_Text = "AT likely valid\nCheck the plugin for details\nReminder: it could still be cheated!";
+string S_AT_Valid_Text = "AT likely valid\nCheck the plugin for details\nReminder: it could still be invalid!";
 string S_AT_Inconclusive_Header = "\\$o\\$sAT inconclusive  \\$z\\$n\\$555" + pluginTitle;
-string S_AT_Inconclusive_Text = "AT could be valid or cheated\nCheck the plugin for details";
+string S_AT_Inconclusive_Text = "AT could be valid or invalid\nCheck the plugin for details";
 
 vec4 S_ColorValid = vec4(0.0f, 0.7f, 0.0f, 1.0f);
 vec4 S_ColorInconclusive = vec4(1.0f, 0.5f, 0.0f, 1.0f);
-vec4 S_ColorCheated = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+vec4 S_ColorInvalid = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 vec4 S_ColorError = vec4(0.5f, 0.5f, 0.5f, 1.0f);
 
 const string pluginTitle = "Author Time Check";
@@ -83,8 +83,8 @@ void Reset() {
 }
 
 bool ATValid() { return cpCntMatch && lastIsAT; }
-bool ATCheated() { return !cpCntMatch || !lastIsAT; }
-bool ATInconclusive() { return !ATValid() && !ATCheated(); }
+bool ATInvalid() { return !cpCntMatch || !lastIsAT; }
+bool ATInconclusive() { return !ATValid() && !ATInvalid(); }
 
 void MainLoop() {
     while (true) {
@@ -109,7 +109,7 @@ void MainLoop() {
         }
 
         if (map.ScriptMetadata is null) {
-            UI::ShowNotification(pluginTitle, "This validity of this AT could not be determined", S_ColorError, S_NotifCheatedTime);
+            UI::ShowNotification(S_AT_Inconclusive_Header, S_AT_Inconclusive_Text, S_ColorInconclusive, S_NotifInconclusiveTime);
             mapIDChecked = currentMapUID;
             continue;
         }
@@ -130,9 +130,9 @@ void MainLoop() {
         cpCntMatch = CPsToFinish == CPsMetadata;
         lastIsAT = authorTime == metadataAT;
 
-        if (ATCheated()) {
-            if (S_NotifCheated || force_notif)
-                UI::ShowNotification(S_AT_Cheated_Header, S_AT_Cheated_Text, S_ColorCheated, S_NotifCheatedTime);
+        if (ATInvalid()) {
+            if (S_NotifInvalid || force_notif)
+                UI::ShowNotification(S_AT_Invalid_Header, S_AT_Invalid_Text, S_ColorInvalid, S_NotifInvalidTime);
         }
         else if (ATValid()) {
             if (S_NotifValid || force_notif)

@@ -9,8 +9,8 @@ This plugin therefore only serves as an indicator, as based on the map's metadat
 
 The plugin can give 3 different notifications:
 - AT is likely valid (by default no notificaiton. Can be enabled in the settings.)
-- AT is likey set by a plugin
-- AT might be valid/cheated (inconclusive)
+- AT is likely set by a plugin
+- AT might be valid or set by a plugin (inconclusive)
 
 Requires [MLFeed](https://openplanet.dev/plugin/mlfeedracedata) (and consequently [MLHook](https://openplanet.dev/plugin/mlhook)).
 

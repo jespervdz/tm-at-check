@@ -2,7 +2,7 @@
 name = "Author Time Check"
 author = "TheJaZed"
 category = "Game"
-version = "0.1"
+version = "0.2"
 
 [script]
 dependencies = [ "MLFeedRaceData" ]

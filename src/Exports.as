@@ -5,9 +5,9 @@ namespace AT_Check {
     import bool ATValid() from "AT_Check";
 
     /*
-    Returns if the AT is likely to be cheated
+    Returns if the AT is likely to be set by a plugin
     */
-    import bool ATCheated() from "AT_Check";
+    import bool ATInvalid() from "AT_Check";
 
     /*
     Returns if the AT validity could not be determined

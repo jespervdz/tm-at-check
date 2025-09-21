@@ -3,8 +3,8 @@ void RenderSettingsGeneral()
 {
     UI::Text(Icons::ExclamationTriangle + "This plugin is in no way a guarantee!" + Icons::ExclamationTriangle);
     UI::Text("It is impossible* to know for 100%, if an AT is valid or not, just based on map data.");
-    UI::Text("An AT might appear legit, but could still be cheated in another way.");
-    UI::Text("An AT might also appear cheated, but the time was set on a different copy or version of the (essentially) same map.");
+    UI::Text("An AT might appear legit, but could still be set in another way.");
+    UI::Text("An AT might also appear to be set by a plugin, but the time could come from a different copy or version of (essentially) the same map.");
     UI::PushFontSize(12.0f);
     UI::Text("\\$i*Except for older maps which have the validation ghost saved in the map file, but that I do not check.");
     UI::PopFontSize();
@@ -32,7 +32,7 @@ bool S_NotifInconclusive = true;
 [Setting category="Notifications" name="Time showing AT inconclusive notification [ms]"]
 uint S_NotifInconclusiveTime = 3000;
 
-[Setting category="Notifications" name="Show AT likely cheated notification"]
-bool S_NotifCheated = true;
-[Setting category="Notifications" name="Time showing AT likely cheated notification [ms]"]
-uint S_NotifCheatedTime = 3000;
+[Setting category="Notifications" name="Show AT likely set by a plugin notification"]
+bool S_NotifInvalid = true;
+[Setting category="Notifications" name="Time showing AT likely set by a plugin notification [ms]"]
+uint S_NotifInvalidTime = 3000;
