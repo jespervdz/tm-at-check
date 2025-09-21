@@ -5,5 +5,4 @@ category = "Game"
 version = "0.2"
 
 [script]
-dependencies = [ "MLFeedRaceData", "MLHook" ]
-exports = ["Export.as"]
+dependencies = [ "MLFeedRaceData" ]
