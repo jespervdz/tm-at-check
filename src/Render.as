@@ -12,7 +12,7 @@ void RenderMenu()
         if (UI::MenuItem("Enabled", "", S_Enabled)) S_Enabled = !S_Enabled;
         if (UI::MenuItem("Show data window", "", S_ShowData)) S_ShowData = !S_ShowData;
         if (UI::MenuItem("Settings")) {
-            Meta::OpenSettings(Meta::GetPluginFromID("Author Time Check"));
+            Meta::OpenSettings();
         }
         UI::EndMenu();
     }
