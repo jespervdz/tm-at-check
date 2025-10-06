@@ -21,7 +21,7 @@ uint authorTime;
 int metadataAT;
 bool lastIsAT;
 bool force_notif = false;
-CGameCtnApp@ app = GetApp();
+CGameCtnApp@ app;
 
 void Reset() {
     mapIDChecked = "";
@@ -57,6 +57,7 @@ class _ATWaypointTimesFeed : MLHook::HookMLEventsByType {
 }
 
 void MainLoop() {
+    app = GetApp();
     while (true) {
         sleep(200); // No need to check every frame
         if (!S_Enabled && !force_notif) continue;
