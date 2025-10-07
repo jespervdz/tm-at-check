@@ -22,6 +22,9 @@ bool S_HideWithGame = true;
 [Setting category="General" name="Show/hide data window with Openplanet UI"]
 bool S_HideWithOP = true;
 
+[Setting category="General" name="Hide if AT is already beaten"]
+bool S_HideIfATBeaten = true;
+
 [Setting category="Notifications" name="Show AT likely valid notification"]
 bool S_NotifValid = false;
 [Setting category="Notifications" name="Time showing AT likely valid notification [ms]"]

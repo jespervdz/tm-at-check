@@ -2,7 +2,10 @@
 name = "Author Time Check"
 author = "TheJaZed"
 category = "Game"
-version = "0.2"
+version = "0.3"
+siteid = 769
 
 [script]
-dependencies = [ "MLFeedRaceData", "MLHook" ]
+dependencies = [ "NadeoServices", "MLFeedRaceData", "MLHook" ]
+module = "AT_Check"
+exports = [ "src/Export.as" ]

@@ -10,6 +10,7 @@ vec4 S_ColorInconclusive = vec4(1.0f, 0.5f, 0.0f, 1.0f);
 vec4 S_ColorInvalid = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 vec4 S_ColorError = vec4(0.5f, 0.5f, 0.5f, 1.0f);
 
+const uint MAX_UINT = 4294967295;
 const string pluginTitle = "Author Time Check";
 string mapIDChecked = "";
 string currentMapUID = "";
@@ -18,10 +19,9 @@ uint CPsToFinish;
 uint CPsMetadata;
 bool cpCntMatch;
 uint authorTime;
-int metadataAT;
+uint metadataAT;
 bool lastIsAT;
 bool force_notif = false;
-CGameCtnApp@ app;
 
 void Reset() {
     mapIDChecked = "";
@@ -30,8 +30,10 @@ void Reset() {
     CPsMetadata = 0;
     cpCntMatch = true;
     authorTime = 0;
-    metadataAT = 0;
+    metadataAT = MAX_UINT;
     lastIsAT = true;
+    WRTime = MAX_UINT;
+    WRTimeMapUID = "";
 }
 
 bool ATValid() { return cpCntMatch && lastIsAT; }
@@ -56,8 +58,34 @@ class _ATWaypointTimesFeed : MLHook::HookMLEventsByType {
     }
 }
 
+uint WRTime = MAX_UINT;
+string WRTimeMapUID = "";
+
+bool TryGetWR() {
+    // no checks, just try catch. TODO: better checks and logs
+    try {
+        const string route = NadeoServices::BaseURLLive() + "/api/token/leaderboard/group/Personal_Best/map/" + currentMapUID + "/top?length=1&onlyWorld=true&offset=0";
+        NadeoServices::AddAudience("NadeoLiveServices");
+        while (!NadeoServices::IsAuthenticated("NadeoLiveServices")) yield();
+
+        auto request = NadeoServices::Get("NadeoLiveServices", route);
+        request.Start();
+        while(!request.Finished()) yield();
+
+        auto json = Json::Parse(request.String());
+        WRTimeMapUID = json["mapUid"];
+        WRTime = json["tops"][0]["top"][0]["score"]; // just assume all this exists
+        return true;
+    } catch {
+        warn("Unable to retrieve WR");
+        WRTimeMapUID = currentMapUID;
+        WRTime = MAX_UINT;
+        return false;
+    }
+}
+
 void MainLoop() {
-    app = GetApp();
+    auto app = GetApp();
     while (true) {
         sleep(200); // No need to check every frame
         if (!S_Enabled && !force_notif) continue;
@@ -70,15 +98,31 @@ void MainLoop() {
         if (map is null || !isPlayingMap || map.MapInfo.MapUid == "")
         {
             Reset();
+            force_notif = false;
             continue;
         }
 
         currentMapUID = map.MapInfo.MapUid;
         if (currentMapUID == mapIDChecked) continue;
+        authorTime = map.TMObjective_AuthorTime;
+
+        // First check if AT is already beaten
+        if (S_HideIfATBeaten)
+        {
+            if (currentMapUID != WRTimeMapUID)
+            {
+                if (!TryGetWR())
+                    warn("WR unavailabe, assuming AT is unbeaten.");
+            }
+
+            if (WRTime < authorTime && !force_notif)
+                continue;
+        }
 
         if (map.ScriptMetadata is null) { // don't think this is possible, but just to be sure
             UI::ShowNotification(S_AT_Inconclusive_Header, S_AT_Inconclusive_Text, S_ColorInconclusive, S_NotifInconclusiveTime);
             mapIDChecked = currentMapUID;
+            force_notif = false;
             continue;
         }
 
@@ -89,8 +133,7 @@ void MainLoop() {
         // Parse all information
         CPsToFinish = MLFeed::GetRaceData_V4().CPsToFinish;
         CPsMetadata = times.Length;
-        authorTime = map.TMObjective_AuthorTime;
-        metadataAT = times.Length > 0 ? times[times.Length - 1] : -1;
+        metadataAT = times.Length > 0 ? times[times.Length - 1] : MAX_UINT;
         cpCntMatch = CPsToFinish == CPsMetadata;
         lastIsAT = authorTime == metadataAT;
 
