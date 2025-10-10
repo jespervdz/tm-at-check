@@ -31,14 +31,14 @@ void RenderInfo() {
 
                 AddTableRow("Current Map UID:", currentMapUID);
                 AddTableRow("Data from map UID:", mapIDChecked);
-                AddTableRow("Metadata CP times:", Json::Write(times.ToJson()));
+                AddTableRow("Metadata CP times:", Json::Write(CPTimesAT.ToJson()));
                 AddTableRow("CPs in map:", tostring(CPsToFinish));
                 AddTableRow("CPs in metadata:", tostring(CPsMetadata));
                 AddTableRow("CP count matches:", tostring(cpCntMatch));
                 AddTableRow("Authortime:", tostring(authorTime));
                 AddTableRow("Metadata AT:", tostring(metadataAT));
                 AddTableRow("AT metadata match:", tostring(lastIsAT));
-                AddTableRow("WR:", tostring(WRTime));
+                AddTableRow("AT Ghost in Map:", tostring(ATGhostInMap));
 
                 UI::EndTable();
             }

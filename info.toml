@@ -2,7 +2,7 @@
 name = "Author Time Check"
 author = "TheJaZed"
 category = "Game"
-version = "0.3"
+version = "0.4"
 siteid = 769
 
 [script]

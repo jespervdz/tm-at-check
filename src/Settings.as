@@ -10,6 +10,7 @@ void RenderSettingsGeneral()
     UI::PopFontSize();
 }
 
+// General Settings
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
 
@@ -25,10 +26,20 @@ bool S_HideWithOP = true;
 [Setting category="General" name="Hide if AT is already beaten"]
 bool S_HideIfATBeaten = true;
 
+// Notification Settings
 [Setting category="Notifications" name="Show AT likely valid notification"]
 bool S_NotifValid = false;
 [Setting category="Notifications" name="Time showing AT likely valid notification [ms]"]
 uint S_NotifValidTime = 3000;
+
+[Setting
+    category="Notifications"
+    name="Show AT Ghost (GPS) is likely present in the map"
+    description="The plugin can only check the 'race time' of the ghost in the mediatracker clip, not if it is valid or driven on the same (version of the) map"
+]
+bool S_NotifIfGPS = true;
+[Setting category="Notifications" name="Time showing AT GPS [ms]"]
+uint S_NotifGPSTime = 3000;
 
 [Setting category="Notifications" name="Show AT inconclusive notification"]
 bool S_NotifInconclusive = true;

@@ -1,5 +1,10 @@
 namespace AT_Check {
     /*
+    Returns if the map has a ghost with AT race time (e.g. GPS)
+    */
+    import bool ATGhostPresent() from "AT_Check";
+
+    /*
     Returns if the AT is likely to be valid
     */
     import bool ATValid() from "AT_Check";
