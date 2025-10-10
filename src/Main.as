@@ -95,7 +95,7 @@ void MainLoop() {
     auto app = GetApp();
     while (true) {
         sleep(200); // No need to check every frame
-        if (app is null || (!S_Enabled && !force_notif)) continue;
+        if (app is null || (!S_Enabled && !force_notif) || app.Editor !is null) continue;
 
         CGameCtnChallenge@ map = app.RootMap;
         CSmArenaClient@ playground = cast<CSmArenaClient>(app.CurrentPlayground);
