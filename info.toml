@@ -6,6 +6,6 @@ version = "0.4"
 siteid = 769
 
 [script]
-dependencies = [ "NadeoServices", "MLFeedRaceData", "MLHook" ]
+dependencies = [ "NadeoServices", "MLFeedRaceData" ]
 module = "AT_Check"
 exports = [ "src/Export.as" ]
