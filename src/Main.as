@@ -101,7 +101,13 @@ void MainLoop() {
         CSmArenaClient@ playground = cast<CSmArenaClient>(app.CurrentPlayground);
         bool isPlayingMap = !(playground is null) && playground.Arena.Players.Length > 0;
 
-        if (map is null || !isPlayingMap || map.MapInfo.MapUid == "") {
+        if (map is null
+            || !isPlayingMap
+            || map.MapInfo.MapUid == ""
+            || map.MapType.Contains("Stunt")
+            || map.MapType.Contains("Platform")
+            || map.MapType.Contains("Royal")
+        ) {
             Reset();
             force_notif = false;
             continue;
