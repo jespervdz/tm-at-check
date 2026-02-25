@@ -73,11 +73,11 @@ bool MapHasMediaClipATGhost(CGameCtnChallenge@ map) {
     for (uint i = 0; i < map.ClipGroupInGame.Clips.Length; i++) {
         CGameCtnMediaClip@ clip = map.ClipGroupInGame.Clips[i];
         if (clip is null) continue;
-        for (uint i = 0; i < clip.Tracks.Length; i++) {
-            auto track = clip.Tracks[i];
+        for (uint j = 0; j < clip.Tracks.Length; j++) {
+            auto track = clip.Tracks[j];
             if (track is null) continue;
-            for (uint j = 0; j < track.Blocks.Length; j++) {
-                auto block = track.Blocks[j];
+            for (uint k = 0; k < track.Blocks.Length; k++) {
+                auto block = track.Blocks[k];
                 if (block is null) continue;
 
                 auto entBlock = cast<CGameCtnMediaBlockEntity>(block);
