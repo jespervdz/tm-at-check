@@ -111,8 +111,10 @@ void MainLoop() {
         if (currentMapUID == mapIDChecked) continue;
         authorTime = map.TMObjective_AuthorTime;
 
-        if (S_HideIfATBeaten && !force_notif && WRbeatAT())
+        if (S_HideIfATBeaten && !force_notif && WRbeatAT()) {
+            mapIDChecked = currentMapUID;
             continue;
+        }
 
         if (map.ScriptMetadata is null) { // don't think this is possible, but just to be sure
             NotifyInconclusive();
