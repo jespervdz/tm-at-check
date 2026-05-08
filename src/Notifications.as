@@ -1,5 +1,5 @@
-const string S_AT_GPS_Header = "\\$o\\$sMap likely has AT GPS  \\$z\\$n\\$555" + pluginTitle;
-const string S_AT_GPS_Text = "There is a ghost present with AT time. \nReminder: it could still be invalid!";
+const string S_AT_GPS_Header = "\\$o\\$sMap likely has (>)AT GPS  \\$z\\$n\\$555" + pluginTitle;
+const string S_AT_GPS_Text = "There is a ghost present with (>)AT time. \nReminder: it could still be invalid!";
 const string S_AT_Invalid_Header = "\\$o\\$sAT set by a plugin  \\$z\\$n\\$555" + pluginTitle;
 const string S_AT_Invalid_Text = "AT likely set by a plugin\nReminder: it could still be valid!";
 const string S_AT_Valid_Header = "\\$o\\$sAT Valid  \\$z\\$n\\$555" + pluginTitle;

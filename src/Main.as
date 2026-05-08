@@ -83,7 +83,7 @@ bool MapHasMediaClipATGhost(CGameCtnChallenge@ map) {
                 auto entBlock = cast<CGameCtnMediaBlockEntity>(block);
                 if (entBlock is null) continue; // not a ghost/entity track
 
-                if (authorTime == Dev::GetOffsetUint32(block, 0x7C))
+                if (authorTime >= Dev::GetOffsetUint32(block, 0x7C))
                     return true;
             }
         }
