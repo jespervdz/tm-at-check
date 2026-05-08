@@ -26,6 +26,11 @@ bool ATValid() { return cpCntMatch && lastIsAT; }
 bool ATInvalid() { return !cpCntMatch || !lastIsAT; }
 bool ATInconclusive() { return !ATValid() && !ATInvalid(); }
 
+void ForceCheck() {
+    force_notif = true;
+    Reset(); // causes the notification to re-appear
+}
+
 class _ATWaypointTimesFeed : MLHook::HookMLEventsByType {
     _ATWaypointTimesFeed() { super("AT_Check"); }
 

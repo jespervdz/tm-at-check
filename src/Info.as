@@ -24,6 +24,9 @@ void RenderInfo() {
             UI::TextWrapped("There are many valid reasons to set AT with a plugin (e.g. scenery, adding GPS, cutfix, even just recalculating shadows, and more)");
             UI::TextWrapped("This plugin is only an indicator. It will not claim an AT is cheated - merely if a plugin was used.");
 
+            if (UI::Button("Check Author Time")) ForceCheck();
+
+            UI::TextWrapped("The data below could not all be loaded yet, force a check to update!");
             if (UI::BeginTable("atCheckTable", 2, UI::TableFlags::SizingStretchSame)) {
                 UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed);
                 UI::TableSetupColumn("Value", UI::TableColumnFlags::WidthStretch);
