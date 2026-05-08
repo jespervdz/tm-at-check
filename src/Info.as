@@ -21,7 +21,7 @@ void RenderInfo() {
         if (UI::Begin(pluginTitle + " Info", S_ShowData, UI::WindowFlags::None)) {
 
             UI::Text(Icons::ExclamationTriangle + "IMPORTANT" + Icons::ExclamationTriangle);
-            UI::TextWrapped("There are many valid reasons to set AT with a plugin (e.g. scenery, adding GPS, cutfix, and more)");
+            UI::TextWrapped("There are many valid reasons to set AT with a plugin (e.g. scenery, adding GPS, cutfix, even just recalculating shadows, and more)");
             UI::TextWrapped("This plugin is only an indicator. It will not claim an AT is cheated - merely if a plugin was used.");
 
             if (UI::BeginTable("atCheckTable", 2, UI::TableFlags::SizingStretchSame)) {
