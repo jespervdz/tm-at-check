@@ -6,6 +6,8 @@ int[] CPTimesAT = {};
 uint authorTime = 0;
 bool force_notif = false;
 bool ATGhostInMap = false;
+bool WRChecked = false;
+bool ATBeaten = false;
 _ATWaypointTimesFeed@ ATWaypointTimesFeed = _ATWaypointTimesFeed();
 
 uint get_CPsToFinish() { return MLFeed::GetRaceData_V4().CPsToFinish; }
@@ -19,6 +21,8 @@ void Reset() {
     CPTimesAT = {};
     authorTime = 0;
     ATGhostInMap = false;
+    WRChecked = false;
+    ATBeaten = false;
 }
 
 bool ATGhostPresent() { return ATGhostInMap; }
@@ -121,8 +125,12 @@ void MainLoop() {
         currentMapUID = map.MapInfo.MapUid;
         if (currentMapUID == mapIDChecked) continue;
         authorTime = map.TMObjective_AuthorTime;
+        if (!WRChecked) {
+            ATBeaten = WRbeatAT();
+            WRChecked = true;
+        }
 
-        if (S_HideIfATBeaten && !force_notif && WRbeatAT()) {
+        if (S_HideIfATBeaten && !force_notif && ATBeaten) {
             mapIDChecked = currentMapUID;
             continue;
         }
